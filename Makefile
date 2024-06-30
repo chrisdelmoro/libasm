@@ -3,7 +3,8 @@ NAME		= libasm.a
 LIBFT 		= $(LIBFT_DIR)/libasm.a
 
 SRC_DIR		= ./src/
-SRC			=	$(SRC_DIR)ft_write.s
+SRC			=	$(SRC_DIR)ft_write.s \
+				$(SRC_DIR)ft_strlen.s
 
 OBJ_DIR		= ./obj/
 OBJ			= $(SRC:.s=.o)
@@ -17,15 +18,16 @@ CFLAGS		= -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): $(SRC)
-	@ $(NASM) $(NASMFLAGS) $(SRC)
-	@ mkdir $(OBJ_DIR)
+	@ $(NASM) $(NASMFLAGS) $(SRC_DIR)ft_write.s
+	@ $(NASM) $(NASMFLAGS) $(SRC_DIR)ft_strlen.s
+	@ mkdir -p $(OBJ_DIR)
 	@ ar -rc $(NAME) $(OBJ)
 	@ mv $(OBJ) $(OBJ_DIR)
 	@ echo "$(NAME) created successfully!"
 
 main: all
 	@ $(GCC) $(CFLAGS) -o main_test ./src/main.c $(NAME)
-	@ mkdir ./bin/
+	@ mkdir -p ./bin/
 	@ mv ./main_test ./bin/
 	@ echo "Tests compiled successfully!"
 

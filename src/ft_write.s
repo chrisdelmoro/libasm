@@ -1,17 +1,29 @@
-section .data
-    mensagem db 'Hello, World! HAHAHAHAHA!', 10
-    tam equ $-mensagem
+extern __errno_location
 
 section .text
-    global _start
+    global ft_write
 
-_start:
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, mensagem
-    mov rdx, tam
-    syscall
+ft_write:
+    ; Parameters are already in the correct registers
+    ; rdi = file descriptor
+    ; rsi = pointer to string
+    ; rdx = number of characters to write
 
-    mov rax, 60
-    mov rdi, 0
+    ; Perform the write syscall
+    mov rax, 1         ; syscall number for sys_write
     syscall
+    
+    ; Check for error (if rax < 0)
+    cmp rax, 0
+    jge no_error       ; if rax >= 0, no error
+
+    ; Handle error
+    neg rax            ; negate rax to get the positive error number
+    mov rdi, rax       ; error number to rdi
+    call __errno_location WRT ..plt ; get address of errno
+    mov rdi, rax       ; store the address of errno in rdi
+    mov [rdi], edi     ; store error number in errno
+    mov rax, -1        ; return -1 to indicate error
+
+no_error:
+    ret

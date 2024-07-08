@@ -10,7 +10,7 @@ ft_write:
     ; rdx = number of characters to write
 
     ; Perform the write syscall
-    mov rax, 1         ; syscall number for sys_write
+    mov rax, 1         ; syscall number for sys_write - https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/
     syscall
     
     ; Check for error (if rax < 0)

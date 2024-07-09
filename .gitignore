@@ -54,3 +54,4 @@ dkms.conf
 # BLA
 /bin
 /obj
+libasmTester
